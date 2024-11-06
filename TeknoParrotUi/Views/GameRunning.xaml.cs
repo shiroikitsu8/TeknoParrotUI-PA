@@ -28,6 +28,7 @@ namespace TeknoParrotUi.Views
         private readonly bool _isTest;
         private readonly string _gameLocation;
         private readonly string _gameLocation2;
+        private readonly string _gameLocation3;
         private readonly SerialPortHandler _serialPortHandler;
         private readonly GameProfile _gameProfile;
         private static bool _runEmuOnly;
@@ -45,8 +46,12 @@ namespace TeknoParrotUi.Views
         private HwndSource _source;
         private InputApi _inputApi = InputApi.DirectInput;
         private bool _twoExes;
+        private bool _threeExes;
         private bool _secondExeFirst;
         private string _secondExeArguments;
+        private string _thirdExeArguments;
+        private string _gameVersion;
+        private int _noMaxiTerminal;
 #if DEBUG
         DebugJVS jvsDebug;
 #endif
@@ -63,6 +68,34 @@ namespace TeknoParrotUi.Views
 
             if (inputApiString != null)
                 _inputApi = (InputApi)Enum.Parse(typeof(InputApi), inputApiString);
+
+            if (gameProfile.EmulationProfile != EmulationProfile.NamcoWmmt3)
+            {
+                // Check run MaxiTerminal or not
+                _noMaxiTerminal = int.Parse(gameProfile.ConfigValues.Find(cv => cv.FieldName == "Don't Run MaxiTerminal")?.FieldValue);
+
+                // Check again if it's Terminal Mode or not
+                if (_noMaxiTerminal == 0)
+                {
+                    _noMaxiTerminal = int.Parse(gameProfile.ConfigValues.Find(cv => cv.FieldName == "TerminalMode")?.FieldValue);
+                }
+
+                if (!string.IsNullOrEmpty(gameProfile.GamePath2))
+                {
+                    _gameLocation2 = gameProfile.GamePath2;
+                    _secondExeFirst = gameProfile.LaunchSecondExecutableFirst;
+                }
+                if (!string.IsNullOrEmpty(gameProfile.GamePath3))
+                {
+                    _gameLocation3 = gameProfile.GamePath3;
+                }
+
+                _twoExes = gameProfile.HasTwoExecutables;
+                _threeExes = gameProfile.HasThreeExecutables;
+                _gameVersion = gameProfile.GameVersion;
+                _secondExeArguments = gameProfile.SecondExecutableArguments;
+                _thirdExeArguments = gameProfile.ThirdExecutableArguments;
+            }
 
             textBoxConsole.Text = "";
             _runEmuOnly = runEmuOnly;
@@ -321,6 +354,11 @@ namespace TeknoParrotUi.Views
             if (_twoExes && !string.IsNullOrEmpty(_gameLocation2))
             {
                 File.WriteAllText(Path.Combine(Path.GetDirectoryName(_gameLocation2) ?? throw new InvalidOperationException(), "teknoparrot.ini"), lameFile);
+            }
+
+            if (_threeExes && !string.IsNullOrEmpty(_gameLocation3))
+            {
+                File.WriteAllText(Path.Combine(Path.GetDirectoryName(_gameLocation3) ?? throw new InvalidOperationException(), "teknoparrot.ini"), lameFile);
             }
         }
         
@@ -1119,7 +1157,17 @@ namespace TeknoParrotUi.Views
                 }
 
                 if (_twoExes && !_secondExeFirst)
-                    RunAndWait(loaderExe, $"{loaderDll} \"{_gameLocation2}\" {_secondExeArguments}");
+                {
+                    RunAndWait(loaderExe, $"\"{loaderDll}\" \"{_gameLocation2}\" {_secondExeArguments}");
+                }
+
+                if (_threeExes)
+                {
+                    if (_noMaxiTerminal == 0)
+                    {
+                        RunAndWait(loaderExe, $"{loaderDll} \"{_gameLocation3}\" {_thirdExeArguments}");
+                    }
+                }
 
                 //cmdProcess.WaitForExit();
                 bool idzRun = false;

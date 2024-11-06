@@ -245,6 +245,9 @@
   <data name="LibraryGameSettings" xml:space="preserve">
     <value>PELI ASETUKSET</value>
   </data>
+  <data name="MaxiTerminalSettings" xml:space="preserve">
+    <value>MAXITERMINAL SETTINGS</value>
+  </data>
   <data name="LibraryInvalidFiles" xml:space="preserve">
     <value>Pelisi kansiossa on mahdollisesti viallisia tiedostoa. Seuraavanlaiset tiedostot tulisi poistaa kansiosta ennen pelin pelaamista: </value>
     <comment>the filenames are appended to the end</comment>

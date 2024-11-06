@@ -574,6 +574,15 @@ namespace TeknoParrotUi.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MAXITERMINAL SETTINGS.
+        /// </summary>
+        public static string MaxiTerminalSettings {
+            get {
+                return ResourceManager.GetString("MaxiTerminalSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ei.
         /// </summary>
         public static string No {

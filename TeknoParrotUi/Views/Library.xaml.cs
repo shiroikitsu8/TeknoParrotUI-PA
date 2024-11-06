@@ -30,6 +30,7 @@ namespace TeknoParrotUi.Views
         public JoystickControl Joystick;
         public readonly List<GameProfile> _gameNames = new List<GameProfile>();
         readonly GameSettingsControl _gameSettings = new GameSettingsControl();
+        readonly MaxiTerminalControl _maxiTerminalSettings = new MaxiTerminalControl();
         private ContentControl _contentControl;
         public bool listRefreshNeeded = false;
 
@@ -56,7 +57,7 @@ namespace TeknoParrotUi.Views
             UpdatePatronText();
 
             _contentControl = contentControl;
-            Joystick =  new JoystickControl(contentControl, this);
+            Joystick = new JoystickControl(contentControl, this);
         }
 
         public static BitmapImage defaultIcon = new BitmapImage(new Uri("../Resources/teknoparrot_by_pooterman-db9erxd.png", UriKind.Relative));
@@ -142,22 +143,14 @@ namespace TeknoParrotUi.Views
             if (gameList.Items.Count == 0)
                 return;
 
-            var modifyItem = (ListBoxItem) ((ListBox) sender).SelectedItem;
+            var modifyItem = (ListBoxItem)((ListBox)sender).SelectedItem;
             var profile = _gameNames[gameList.SelectedIndex];
             UpdateIcon(profile.IconName.Split('/')[1], ref gameIcon);
 
             _gameSettings.LoadNewSettings(profile, modifyItem, _contentControl, this);
+            _maxiTerminalSettings.LoadNewSettings(profile, _contentControl, this);
             Joystick.LoadNewSettings(profile, modifyItem);
-            if (!profile.HasSeparateTestMode)
-            {
-                ChkTestMenu.IsChecked = false;
-                ChkTestMenu.IsEnabled = false;
-            }
-            else
-            {
-                ChkTestMenu.IsEnabled = true;
-                ChkTestMenu.ToolTip = Properties.Resources.LibraryToggleTestMode;
-            }
+
             var selectedGame = _gameNames[gameList.SelectedIndex];
             gameInfoText.Text = $"{Properties.Resources.LibraryEmulator}: {selectedGame.EmulatorType} ({(selectedGame.Is64Bit ? "x64" : "x86")})\n{(selectedGame.GameInfo == null ? Properties.Resources.LibraryNoInfo : selectedGame.GameInfo.ToString())}";
         }
@@ -166,6 +159,7 @@ namespace TeknoParrotUi.Views
         {
             gameIcon.Source = defaultIcon;
             _gameSettings.InitializeComponent();
+            _maxiTerminalSettings.InitializeComponent();
             Joystick.InitializeComponent();
             gameInfoText.Text = "";
         }
@@ -293,7 +287,8 @@ namespace TeknoParrotUi.Views
                 case EmulatorType.N2:
                     throw new Exception("N2 games are not supported. This build is for Wangan Midnight Maximum Tune 6.");
                 case EmulatorType.ElfLdr2:
-                    throw new Exception("Elfldr2 games are not supported. This build is for Wangan Midnight Maximum Tune 6.");
+                    loaderExe = ".\\ElfLdr2\\BudgieLoader.exe";
+                    break;
                 case EmulatorType.OpenParrot:
                     loaderDll = (is64Bit ? ".\\OpenParrotx64\\OpenParrot64" : ".\\OpenParrotWin32\\OpenParrot");
                     break;
@@ -302,11 +297,12 @@ namespace TeknoParrotUi.Views
                 case EmulatorType.SegaTools:
                     throw new Exception("SegaTools are not supported in this build. TeknoParrot is stealing others' work by including this.");
                 default:
+                    loaderDll = (is64Bit ? ".\\TeknoParrot\\TeknoParrot64" : ".\\TeknoParrot\\TeknoParrot");
                     break;
             }
 
             // The arcade community hates you.
-            if (File.Exists("CustomSettings.json"))
+            if (File.Exists("CustomSettings.json") && gameProfile.EmulationProfile != EmulationProfile.NamcoWmmt3)
             {
                 var s = Custom.CustomSettings.LoadSettings();
                 loaderExe = Path.Combine(s.OpenParrotPath, "OpenParrotLoader64.exe");
@@ -354,6 +350,22 @@ namespace TeknoParrotUi.Views
                 }
             }
 
+            // Check third exe
+            if (gameProfile.HasThreeExecutables)
+            {
+                if (string.IsNullOrEmpty(gameProfile.GamePath3))
+                {
+                    MessageBoxHelper.ErrorOK(Properties.Resources.LibraryGameLocation3NotSet);
+                    return false;
+                }
+
+                if (!File.Exists(gameProfile.GamePath3))
+                {
+                    MessageBoxHelper.ErrorOK(string.Format(Properties.Resources.LibraryCantFindGame, gameProfile.GamePath));
+                    return false;
+                }
+            }
+
             if (gameProfile.EmulationProfile == EmulationProfile.FastIo || gameProfile.EmulationProfile == EmulationProfile.Theatrhythm)
             {
                 if (!CheckiDMAC(gameProfile.GamePath, gameProfile.Is64Bit))
@@ -375,23 +387,26 @@ namespace TeknoParrotUi.Views
 
             EmuBlacklist bl = new EmuBlacklist(gameProfile.GamePath);
             EmuBlacklist bl2 = new EmuBlacklist(gameProfile.GamePath2);
+            EmuBlacklist bl3 = new EmuBlacklist(gameProfile.GamePath3);
 
-            if (bl.FoundProblem || bl2.FoundProblem)
+            if (bl.FoundProblem || bl2.FoundProblem || bl3.FoundProblem)
             {
                 string err = "It seems you have another emulator already in use.\nThis will most likely cause problems.";
 
-                if (bl.FilesToRemove.Count > 0 || bl2.FilesToRemove.Count > 0)
+                if (bl.FilesToRemove.Count > 0 || bl2.FilesToRemove.Count > 0 || bl3.FilesToRemove.Count > 0)
                 {
                     err += "\n\nRemove the following files:\n";
                     err += String.Join("\n", bl.FilesToRemove);
                     err += String.Join("\n", bl2.FilesToRemove);
+                    err += String.Join("\n", bl3.FilesToRemove);
                 }
 
-                if (bl.FilesToClean.Count > 0 || bl2.FilesToClean.Count > 0)
+                if (bl.FilesToClean.Count > 0 || bl2.FilesToClean.Count > 0 || bl3.FilesToClean.Count > 0)
                 {
                     err += "\n\nReplace the following patched files by the originals:\n";
                     err += String.Join("\n", bl.FilesToClean);
                     err += String.Join("\n", bl2.FilesToClean);
+                    err += String.Join("\n", bl3.FilesToClean);
                 }
 
                 err += "\n\nContinue?";
@@ -581,7 +596,7 @@ namespace TeknoParrotUi.Views
             if (gameList.Items.Count == 0)
                 return;
 
-            var gameProfile = (GameProfile) ((ListBoxItem) gameList.SelectedItem).Tag;
+            var gameProfile = (GameProfile)((ListBoxItem)gameList.SelectedItem).Tag;
 
             if (Lazydata.ParrotData.SaveLastPlayed)
             {
@@ -589,7 +604,7 @@ namespace TeknoParrotUi.Views
                 JoystickHelper.Serialize();
             }
 
-            var testMenu = ChkTestMenu.IsChecked;
+            var testMenu = false;
 
             if (ValidateAndRun(gameProfile, out var loader, out var dll, false, this, testMenu))
             {
@@ -603,23 +618,6 @@ namespace TeknoParrotUi.Views
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void BtnVerifyGame(object sender, RoutedEventArgs e)
-        {
-            if (gameList.Items.Count == 0)
-                return;
-
-            var selectedGame = _gameNames[gameList.SelectedIndex];
-            if (!File.Exists(selectedGame.ValidMd5))
-            {
-                MessageBoxHelper.InfoOK(Properties.Resources.LibraryNoHashes);
-            }
-            else
-            {
-                Application.Current.Windows.OfType<MainWindow>().Single().contentControl.Content =
-                    new VerifyGame(selectedGame.GamePath, selectedGame.ValidMd5);
-            }
-        }
-
         private void BtnMoreInfo(object sender, RoutedEventArgs e)
         {
             string path = string.Empty;
@@ -638,6 +636,14 @@ namespace TeknoParrotUi.Views
             var url = "https://teknogods.github.io/" + path;
             Debug.WriteLine($"opening {url}");
             Process.Start(url);
+        }
+
+        private void BtnMaxiTerminal(object sender, RoutedEventArgs e)
+        {
+            if (gameList.Items.Count == 0)
+                return;
+
+            Application.Current.Windows.OfType<MainWindow>().Single().contentControl.Content = _maxiTerminalSettings;
         }
 
         private void BtnDownloadMissingIcons(object sender, RoutedEventArgs e)

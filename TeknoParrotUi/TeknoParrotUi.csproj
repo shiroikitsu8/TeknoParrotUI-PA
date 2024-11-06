@@ -221,6 +221,9 @@
     <Compile Include="Helpers\WPFFolderBrowserDialog.cs" />
     <Compile Include="Helpers\XDelta3.cs" />
     <Compile Include="JoystickHelper.cs" />
+    <Compile Include="UserControls\MaxiTerminalControl.xaml.cs">
+      <DependentUpon>MaxiTerminalControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\TextInputDialog.xaml.cs">
       <DependentUpon>TextInputDialog.xaml</DependentUpon>
     </Compile>
@@ -289,6 +292,10 @@
       <DependentUpon>VerifyGame.xaml</DependentUpon>
     </Compile>
     <Page Include="Custom\CustomSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\MaxiTerminalControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

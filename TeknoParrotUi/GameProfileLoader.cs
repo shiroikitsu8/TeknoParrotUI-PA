@@ -97,6 +97,7 @@ namespace TeknoParrotUi.Common
                             gameProfile.GameInfo = JoystickHelper.DeSerializeDescription(file);
                             gameProfile.GamePath = other.GamePath;
                             gameProfile.GamePath2 = other.GamePath2;
+                            gameProfile.GamePath3 = other.GamePath3;
                             JoystickHelper.SerializeGameProfile(gameProfile);
                             profileList.Add(gameProfile);
                             continue;

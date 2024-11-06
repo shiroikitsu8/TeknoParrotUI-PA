@@ -38,8 +38,8 @@ namespace TeknoParrotUi.Custom
         {
             Settings settings;
 
-            var currentDir = Environment.CurrentDirectory;
-            var curdirJoin = System.IO.Path.Combine(currentDir, "OpenParrotLoader");
+            //var currentDir = Environment.CurrentDirectory;
+            var curdirJoin = System.IO.Path.Combine(".\\", "OpenParrotx64");
             if (!File.Exists("CustomSettings.json"))
             {
                 settings = new Settings
@@ -47,7 +47,8 @@ namespace TeknoParrotUi.Custom
                     OpenParrotPath = curdirJoin,
                 };
                 SaveSettings(settings);
-            } else
+            }
+            else
             {
                 settings = LoadSettings();
             }

@@ -421,6 +421,15 @@ namespace TeknoParrotUi.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Third game location not set! Please set it in Game Settings..
+        /// </summary>
+        public static string LibraryGameLocation3NotSet {
+            get {
+                return ResourceManager.GetString("LibraryGameLocation3NotSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Game location not set! Please set it in Game Settings..
         /// </summary>
         public static string LibraryGameLocationNotSet {
@@ -590,6 +599,15 @@ namespace TeknoParrotUi.Properties {
         public static string MainTPOnline {
             get {
                 return ResourceManager.GetString("MainTPOnline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MAXITERMINAL SETTINGS.
+        /// </summary>
+        public static string MaxiTerminalSettings {
+            get {
+                return ResourceManager.GetString("MaxiTerminalSettings", resourceCulture);
             }
         }
         

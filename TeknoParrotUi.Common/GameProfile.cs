@@ -47,10 +47,15 @@ namespace TeknoParrotUi.Common
         public bool DevOnly { get; set; }
         public string ExecutableName { get; set; }
         public string ExecutableName2 { get; set; }
-        public bool HasTwoExecutables { get; set; } = false;
-        public bool LaunchSecondExecutableFirst { get; set; } = false;
+        public string ExecutableName3 { get; set; }
+        public string GameVersion { get; set; }
+        public bool HasTwoExecutables { get; set; } = true;
+        public bool HasThreeExecutables { get; set; } = true;
+        public bool LaunchSecondExecutableFirst { get; set; } = true;
         public string SecondExecutableArguments { get; set; }
+        public string ThirdExecutableArguments { get; set; }
         public string GamePath2 { get; set; }
+        public string GamePath3 { get; set; }
         // advanced users only!
         public string CustomArguments { get; set; }
         public short xAxisMin { get; set; } = 0;

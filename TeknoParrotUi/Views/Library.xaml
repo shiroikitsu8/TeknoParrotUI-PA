@@ -43,17 +43,13 @@
         <ScrollViewer Grid.Row="3" Grid.Column="1" Margin="11,0,8,51">
             <TextBlock x:Name="gameInfoText" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{x:Static p:Resources.LibraryNoInfo}" Width="256" TextAlignment="Center" FontSize="14" Grid.Column="1" Grid.Row="3"/>
         </ScrollViewer>
-        <Button Content="{x:Static p:Resources.LibraryMoreInfo}" HorizontalAlignment="Left" Margin="10,4,0,2" Width="256" Click="BtnMoreInfo" Grid.Column="1" Grid.Row="4" Height="Auto"/>
-        <Button Content="{x:Static p:Resources.LibraryLaunchGame}" HorizontalAlignment="Left" Margin="9,3,0,1" Width="256" Click="BtnLaunchGame" Grid.Column="1" Grid.Row="5" Height="Auto"/>
-        <Button Content="{x:Static p:Resources.LibraryGameSettings}" HorizontalAlignment="Left" Margin="10,4,0,5" Width="256" Click="BtnGameSettings" Grid.Column="1" Grid.Row="6" Height="Auto"/>
+        <Button Content="{x:Static p:Resources.LibraryLaunchGame}" HorizontalAlignment="Left" Margin="10,4,0,2" Width="256" Click="BtnLaunchGame" Grid.Column="1" Grid.Row="4" Height="Auto"/>
+        <Button Content="{x:Static p:Resources.LibraryGameSettings}" HorizontalAlignment="Left" Margin="9,3,0,1" Width="256" Click="BtnGameSettings" Grid.Column="1" Grid.Row="5" Height="Auto"/>
+        <Button Content="{x:Static p:Resources.MaxiTerminalSettings}" HorizontalAlignment="Left" Margin="10,4,0,5" Width="256" Click="BtnMaxiTerminal" Grid.Column="1" Grid.Row="6" Height="Auto"/>
         <Button Content="{x:Static p:Resources.LibraryControllerSetup}" HorizontalAlignment="Left" Margin="10,0,0,6" Width="256" Click="BtnControllerSettings" Grid.Column="1" Grid.Row="7" Height="Auto"/>
-        <Viewbox Margin="0,0,0,21" Grid.Row="8" Grid.Column="1">
-            <TextBlock Text="{x:Static p:Resources.LibraryTestMenu}"/>
-        </Viewbox>
-        <ToggleSwitch:HorizontalToggleSwitch x:Name="ChkTestMenu" HorizontalAlignment="Left" Margin="95,20,0,0" VerticalAlignment="Stretch" RenderTransformOrigin="0.71,1.36" Grid.Column="1" Grid.Row="8" Height="Auto"/>
-        <Button Content="{x:Static p:Resources.LibraryVerifyGame}" HorizontalAlignment="Left" Margin="10,3,0,3" Width="256" Click="BtnVerifyGame" Grid.Column="1" Grid.Row="9" Height="Auto" />
-        <Button Content="{x:Static p:Resources.LibraryDownloadMissingIcons}" HorizontalAlignment="Left" Margin="9,4,0,1" Width="256" Click="BtnDownloadMissingIcons" Grid.Column="1" Grid.Row="10" Height="Auto" />
-        <Button x:Name="CustomSettingsButton" Grid.Column="1" Content="CUSTOM SETTINGS (WMMT)" HorizontalAlignment="Center" Margin="0,125,0,0" Grid.Row="3" VerticalAlignment="Top" Height="36" Width="254" Click="Button_Click"/>
+        <Button Content="{x:Static p:Resources.LibraryDownloadMissingIcons}" HorizontalAlignment="Left" Margin="11,33,0,10" Width="256" Click="BtnDownloadMissingIcons" Grid.Column="1" Grid.Row="9" Height="Auto" Grid.RowSpan="2" />
+        <Button x:Name="CustomSettingsButton" Grid.Column="1" Content="CUSTOM SETTINGS (WMMT)" HorizontalAlignment="Center" Margin="0,122,0,0" Grid.Row="3" VerticalAlignment="Top" Height="36" Width="256" Click="Button_Click"/>
+        <Button Content="{x:Static p:Resources.LibraryControllerSetup}" HorizontalAlignment="Center" Margin="0,0,0,6" Width="256" Click="BtnControllerSettings" Grid.Column="1" Grid.Row="7" Height="Auto"/>
 
     </Grid>
 </UserControl>

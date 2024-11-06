@@ -251,11 +251,17 @@ Please re-extract TeknoParrot.</value>
   <data name="LibraryGameLocation2NotSet" xml:space="preserve">
     <value>Second game location not set! Please set it in Game Settings.</value>
   </data>
+  <data name="LibraryGameLocation3NotSet" xml:space="preserve">
+    <value>Third game location not set! Please set it in Game Settings.</value>
+  </data>
   <data name="LibraryGameLocationNotSet" xml:space="preserve">
     <value>Game location not set! Please set it in Game Settings.</value>
   </data>
   <data name="LibraryGameSettings" xml:space="preserve">
     <value>GAME SETTINGS</value>
+  </data>
+  <data name="MaxiTerminalSettings" xml:space="preserve">
+    <value>MAXITERMINAL SETTINGS</value>
   </data>
   <data name="LibraryInvalidFiles" xml:space="preserve">
     <value>There are possibly some invalid files in your game directory.

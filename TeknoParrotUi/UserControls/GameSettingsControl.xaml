@@ -69,9 +69,12 @@
         <TextBox x:Name="GamePathBox" PreviewMouseDown="SelectExecutableForTextBox" IsReadOnly="true" Tag="SettingsTxt" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Margin="0,6,0,6" Text="C:\Demo\Path\file.exe"/>
         <TextBlock x:Name="GameExecutable2Text" TextWrapping="Wrap" Text="{x:Static p:Resources.GameSettingsGameExecutable}" Grid.Row="3" Grid.Column="1" Margin="0,6,0,6"/>
         <TextBox x:Name="GamePathBox2" PreviewMouseDown="SelectExecutable2ForTextBox" IsReadOnly="true" Tag="SettingsTxt" Grid.Row="4" Grid.Column="1" VerticalAlignment="Top" Margin="0,6,0,6" Text="C:\Demo\Path\file.exe"/>
+        <TextBlock x:Name="GameExecutable3Text" TextWrapping="Wrap" Text="{x:Static p:Resources.GameSettingsGameExecutable}" Grid.Row="5" Grid.Column="1" Margin="0,6,0,6"/>
+        <TextBox x:Name="GamePathBox3" PreviewMouseDown="SelectExecutable3ForTextBox" IsReadOnly="true" Tag="SettingsTxt" Grid.Row="5" Grid.Column="1" VerticalAlignment="Top" Margin="0,33,0,6" Text="C:\Demo\Path\file.exe"/>
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="1" Grid.RowSpan="1" Margin="0,10,0,0">
-            <ItemsControl Name="GameSettingsList">
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="1" Grid.RowSpan="1" Margin="0,73,0,10">
+            <ItemsControl Name="GameSettingsList" Height="Auto">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <UniformGrid Columns="2">
@@ -108,4 +111,3 @@
         <Button Click="BtnGoBack" MaxHeight="30" Margin="7,1,1,10" Content="{x:Static p:Resources.Back}" Grid.Row="7" Height="Auto" Grid.Column="1"/>
     </Grid>
 </UserControl>
-
